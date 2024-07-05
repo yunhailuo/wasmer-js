@@ -16,7 +16,7 @@ use wasmer_wasix::{
         SpawnMemoryType,
     },
     wasmer_wasix_types::wasi::ExitCode,
-    InstanceSnapshot, WasiEnv, WasiFunctionEnv, WasiThreadError,
+    StoreSnapshot, WasiEnv, WasiFunctionEnv, WasiThreadError,
 };
 
 use crate::tasks::SchedulerMessage;
@@ -28,7 +28,7 @@ pub(crate) fn to_scheduler_message(
         run,
         env,
         module,
-        snapshot,
+        globals,
         spawn_type,
         trigger,
         update_layout,
@@ -36,7 +36,7 @@ pub(crate) fn to_scheduler_message(
     } = task;
 
     let module_bytes = module.serialize().unwrap();
-    let snapshot = snapshot.map(InstanceSnapshot::clone);
+    let snapshot = globals.map(StoreSnapshot::clone);
 
     let (memory_ty, memory, run_type) = match spawn_type {
         wasmer_wasix::runtime::SpawnMemoryType::CreateMemory => {
@@ -191,7 +191,7 @@ pub(crate) struct SpawnWasm {
     #[derivative(Debug(format_with = "crate::utils::hidden"))]
     module_bytes: Bytes,
     /// A snapshot of the instance, if we are forking an existing instance.
-    snapshot: Option<InstanceSnapshot>,
+    snapshot: Option<StoreSnapshot>,
     /// An asynchronous callback which is used to run asyncify methods. The
     /// returned value is used in [`wasmer_wasix::rewind()`] or instant
     /// responses.
@@ -279,7 +279,7 @@ fn build_ctx_and_store(
     module_bytes: Bytes,
     env: WasiEnv,
     run_type: WasmMemoryType,
-    snapshot: Option<InstanceSnapshot>,
+    snapshot: Option<StoreSnapshot>,
     update_layout: bool,
 ) -> Option<(WasiFunctionEnv, Store)> {
     // Compile the web assembly module

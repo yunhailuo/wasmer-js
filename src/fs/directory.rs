@@ -165,6 +165,11 @@ impl Default for Directory {
 
 impl FileSystem for Directory {
     #[tracing::instrument(level = "trace", skip(self))]
+    fn readlink(&self, path: &std::path::Path) -> virtual_fs::Result<PathBuf> {
+        self.0.readlink(path)
+    }
+
+    #[tracing::instrument(level = "trace", skip(self))]
     fn read_dir(&self, path: &std::path::Path) -> virtual_fs::Result<virtual_fs::ReadDir> {
         self.0.read_dir(path)
     }
@@ -190,6 +195,11 @@ impl FileSystem for Directory {
 
     #[tracing::instrument(level = "trace", skip(self))]
     fn metadata(&self, path: &std::path::Path) -> virtual_fs::Result<virtual_fs::Metadata> {
+        self.0.metadata(path)
+    }
+
+    #[tracing::instrument(level = "trace", skip(self))]
+    fn symlink_metadata(&self, path: &std::path::Path) -> virtual_fs::Result<virtual_fs::Metadata> {
         self.0.metadata(path)
     }
 

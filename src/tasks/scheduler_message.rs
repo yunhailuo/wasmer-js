@@ -4,7 +4,7 @@ use derivative::Derivative;
 use js_sys::WebAssembly;
 use wasm_bindgen::JsValue;
 use wasmer::AsJs;
-use wasmer_wasix::runtime::module_cache::ModuleHash;
+use wasmer_types::ModuleHash;
 
 use crate::{
     tasks::{
@@ -82,7 +82,7 @@ impl SchedulerMessage {
             }
             consts::TYPE_CACHE_MODULE => {
                 let hash = de.string(consts::MODULE_HASH)?;
-                let hash = ModuleHash::parse_hex(&hash)?;
+                let hash = ModuleHash::xxhash_parse_hex(&hash)?;
                 let module: WebAssembly::Module = de.js(consts::MODULE)?;
                 Ok(SchedulerMessage::CacheModule {
                     hash,

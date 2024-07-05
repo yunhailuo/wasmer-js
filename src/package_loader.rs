@@ -94,8 +94,8 @@ impl wasmer_wasix::runtime::package_loader::PackageLoader for PackageLoader {
     #[tracing::instrument(
         skip_all,
         fields(
-            pkg.name=summary.pkg.name.as_str(),
-            pkg.version=%summary.pkg.version,
+            pkg.name=summary.package_id().as_named().unwrap().full_name.as_str(),
+            pkg.version=%summary.package_id().as_named().unwrap().version,
             pkg.url=summary.dist.webc.as_str(),
         ),
     )]

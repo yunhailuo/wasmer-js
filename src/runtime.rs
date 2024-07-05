@@ -3,15 +3,16 @@ use std::sync::{atomic::AtomicBool, Arc, Mutex, Weak};
 use http::HeaderValue;
 use once_cell::sync::Lazy;
 use virtual_net::VirtualNetworking;
+use wasmer_config::package::PackageSource;
 use wasmer_wasix::{
     http::{HttpClient, WebHttpClient},
     os::{TtyBridge, TtyOptions},
     runtime::{
         module_cache::ThreadLocalCache,
         package_loader::PackageLoader,
-        resolver::{PackageSpecifier, PackageSummary, QueryError, Source, WapmSource},
+        resolver::{PackageSummary, QueryError, Source, WapmSource},
     },
-    VirtualTaskManager, WasiTtyState,
+    SpawnError, VirtualTaskManager, WasiTtyState,
 };
 
 use crate::{tasks::ThreadPool, utils::Error};
@@ -167,9 +168,14 @@ impl wasmer_wasix::runtime::Runtime for Runtime {
         self.module_cache.clone()
     }
 
-    fn load_module_sync(&self, wasm: &[u8]) -> Result<wasmer::Module, anyhow::Error> {
+    fn load_module_sync(&self, wasm: &[u8]) -> Result<wasmer::Module, wasmer_wasix::SpawnError> {
         let wasm = unsafe { js_sys::Uint8Array::view(wasm) };
-        let module = js_sys::WebAssembly::Module::new(&wasm).map_err(crate::utils::js_error)?;
+        let module = js_sys::WebAssembly::Module::new(&wasm).map_err(|err| SpawnError::ModuleLoad {
+            message: match err.as_string() {
+                Some(s) => s,
+                None => "None".to_string(),
+            },
+        })?;
         // Note: We need to use this From impl because it will use the
         // wasm-types-polyfill to parse the *.wasm file's import section.
         //
@@ -236,7 +242,7 @@ struct UnsupportedSource;
 
 #[async_trait::async_trait]
 impl Source for UnsupportedSource {
-    async fn query(&self, _package: &PackageSpecifier) -> Result<Vec<PackageSummary>, QueryError> {
+    async fn query(&self, _package: &PackageSource) -> Result<Vec<PackageSummary>, QueryError> {
         Err(QueryError::Unsupported)
     }
 }
