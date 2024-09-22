@@ -38,7 +38,7 @@ pub(crate) const USER_AGENT: &str = concat!(env!("CARGO_PKG_NAME"), "/", env!("C
 pub(crate) const DEFAULT_RUST_LOG: &[&str] = &["warn"];
 pub(crate) static CUSTOM_WORKER_URL: Lazy<Mutex<Option<String>>> = Lazy::new(Mutex::default);
 pub(crate) const DEFAULT_REGISTRY: &str =
-    wasmer_wasix::runtime::resolver::WapmSource::WASMER_PROD_ENDPOINT;
+    wasmer_wasix::runtime::resolver::BackendSource::WASMER_PROD_ENDPOINT;
 
 const CROSS_ORIGIN_WARNING: &str = r#"This package can only be used from "Cross-Origin Isolated" websites. For more details, check out https://docs.wasmer.io/javascript-sdk/explainers/troubleshooting#sharedarraybuffer-and-cross-origin-isolation"#;
 

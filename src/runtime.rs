@@ -10,7 +10,7 @@ use wasmer_wasix::{
     runtime::{
         module_cache::ThreadLocalCache,
         package_loader::PackageLoader,
-        resolver::{PackageSummary, QueryError, Source, WapmSource},
+        resolver::{PackageSummary, QueryError, Source, BackendSource},
     },
     SpawnError, VirtualTaskManager, WasiTtyState,
 };
@@ -27,7 +27,7 @@ pub struct Runtime {
     pool: ThreadPool,
     task_manager: Arc<dyn VirtualTaskManager>,
     networking: Arc<dyn VirtualNetworking>,
-    source: Option<Arc<WapmSource>>,
+    source: Option<Arc<BackendSource>>,
     http_client: Arc<dyn HttpClient + Send + Sync>,
     package_loader: Arc<crate::package_loader::PackageLoader>,
     module_cache: Arc<ThreadLocalCache>,
@@ -111,7 +111,7 @@ impl Runtime {
     pub fn set_registry(&mut self, url: &str, token: Option<&str>) -> Result<(), Error> {
         let url = url.parse().map_err(Error::from)?;
 
-        let mut source = WapmSource::new(url, self.http_client.clone());
+        let mut source = BackendSource::new(url, self.http_client.clone());
         if let Some(token) = token {
             source = source.with_auth_token(token);
         }

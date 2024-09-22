@@ -1,5 +1,7 @@
 # The Wasmer JavaScript SDK
 
+**In this fork, I upgraded wasmer to 4.3.3 for extra fixes and features I needed in my Javascript project. This is very likely one time only and won't be needed once [the original wasmer-js](https://github.com/wasmerio/wasmer-js) makes a new release. For now and for my own use, I published the upgraded package I built here.**
+
 [![npm (scoped)](https://img.shields.io/npm/v/%40wasmer/sdk)](https://npmjs.org/package/@wasmer/sdk)
 [![NPM Downloads](https://img.shields.io/npm/dm/%40wasmer%2Fsdk)](https://npmjs.org/package/@wasmer/sdk)
 [![License](https://img.shields.io/npm/l/%40wasmer%2Fsdk)](./LICENSE)
