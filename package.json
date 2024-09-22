@@ -1,6 +1,6 @@
 {
-  "name": "@wasmer/sdk",
-  "version": "0.6.0",
+  "name": "@yunhailuo/wasmer-sdk",
+  "version": "0.6.0-wasmer-4.3.3",
   "main": "dist/WasmerSDK.cjs",
   "unpkg": "dist/WasmerSDK.umd.js",
   "module": "dist/WasmerSDK.js",
@@ -20,10 +20,10 @@
   "homepage": "https://github.com/wasmerio/wasmer-js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/wasmerio/wasmer-js.git"
+    "url": "git+https://github.com/yunhailuo/wasmer-js.git"
   },
   "publishConfig": {
-    "access": "public"
+    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "build": "wasm-pack build --release --target=web --weak-refs --no-pack && wasm-opt pkg/wasmer_js_bg.wasm -O2 -o pkg/wasmer_js_bg.wasm && npm run build:rollup",

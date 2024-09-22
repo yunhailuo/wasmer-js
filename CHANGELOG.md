@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.6.0-wasmer-4.3.3](https://github.com/wasmerio/wasmer-js/compare/wasmer-sdk-v0.6.0...wasmer-sdk-v0.6.0-wasmer-4.3.3) (2024-09-21)
+
+
+### Miscellaneous Chores
+
+* upgrade to wasmer 4.3.3 ([ba48b0d](https://github.com/yunhailuo/wasmer-js/commit/ba48b0d5272663a2baaf7f7012bc56bb53f2201d))
+* upgrade to wasmer 4.3.2 ([b599ad6](https://github.com/yunhailuo/wasmer-js/commit/b599ad657283300286dbd9694f26ccec8fc16aeb))
+
 ## [0.6.0](https://github.com/wasmerio/wasmer-js/compare/wasmer-sdk-v0.5.1...wasmer-sdk-v0.6.0) (2023-12-21)
 
 
